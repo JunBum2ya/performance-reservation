@@ -32,6 +32,7 @@ dependencies {
     testImplementation("org.junit.vintage:junit-vintage-engine") {
         exclude("org.hamcrest", "hamcrest-core")
     }
+    testImplementation("com.h2database:h2:2.2.224")
 }
 
 tasks.withType<Test> {
