@@ -6,8 +6,9 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
 
 @Entity
-@Table(name = "performance_seat_info",uniqueConstraints = @UniqueConstraint(name = "seat_unique_key",columnNames = {
-        "performance_id","round","gate","line","seat"
+@Table(name = "performance_seat_info"
+        ,uniqueConstraints = @UniqueConstraint(name = "performance_seat_info_unique",columnNames = {
+                "performance_id","round","gate","line","seat"
 }))
 public class PerformanceSeat extends AuditingDateTimeEntity {
     @Id
