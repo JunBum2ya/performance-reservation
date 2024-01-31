@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.domain;
 
+import com.wanted.preonboarding.core.converter.EnableConverter;
 import com.wanted.preonboarding.ticket.domain.constant.PerformanceType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
@@ -10,6 +11,8 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
+@Table(name = "performance",
+        uniqueConstraints = { @UniqueConstraint(name = "performance_unique_key", columnNames = {"id","round"}) })
 public class Performance {
     @Id
     @Comment("공연/전시 ID")
@@ -29,4 +32,7 @@ public class Performance {
     private PerformanceType type;
     @Column(nullable = false)
     private LocalDateTime startDate;
+    @Convert(converter = EnableConverter.class)
+    @Column(name = "is_reserve", nullable = false)
+    private boolean reserve = false;
 }
