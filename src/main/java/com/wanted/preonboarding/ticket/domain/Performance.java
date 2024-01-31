@@ -28,8 +28,10 @@ public class Performance {
     @Comment("회차")
     @Column(nullable = false)
     private int round;
+    @Comment("NONE, CONCERT, EXHIBITION")
     @Column(nullable = false)
     private PerformanceType type;
+    @Comment("공연 일시")
     @Column(nullable = false)
     private LocalDateTime startDate;
     @Convert(converter = EnableConverter.class)
