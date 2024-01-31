@@ -4,10 +4,10 @@ import com.wanted.preonboarding.core.converter.EnableConverter;
 import com.wanted.preonboarding.ticket.domain.constant.PerformanceType;
 import jakarta.persistence.*;
 import org.hibernate.annotations.Comment;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.time.LocalDateTime;
+import java.util.LinkedHashSet;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -37,4 +37,6 @@ public class Performance {
     @Convert(converter = EnableConverter.class)
     @Column(name = "is_reserve", nullable = false)
     private boolean reserve = false;
+    @OneToMany(mappedBy = "performance")
+    private Set<PerformanceSeat> seats = new LinkedHashSet<>();
 }
