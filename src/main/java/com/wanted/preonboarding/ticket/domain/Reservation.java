@@ -2,8 +2,16 @@ package com.wanted.preonboarding.ticket.domain;
 
 import com.wanted.preonboarding.core.domain.AuditingDateTimeEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Entity
 @Table(name = "reservation")
 public class Reservation extends AuditingDateTimeEntity {
