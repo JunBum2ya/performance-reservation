@@ -3,8 +3,18 @@ package com.wanted.preonboarding.ticket.domain;
 import com.wanted.preonboarding.core.converter.EnableConverter;
 import com.wanted.preonboarding.core.domain.AuditingDateTimeEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
+import java.util.Objects;
+
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
 @Entity
 @Table(name = "performance_seat_info"
         ,uniqueConstraints = @UniqueConstraint(name = "performance_seat_info_unique",columnNames = {
@@ -34,4 +44,38 @@ public class PerformanceSeat extends AuditingDateTimeEntity {
     @OneToOne(mappedBy = "performanceSeat")
     private Reservation reservation;
 
+    public void setPerformance(Performance performance) {
+        if(this.performance != null) {
+            this.performance.getSeats().remove(this);
+        }
+        this.performance = performance;
+    }
+
+    public void update(int gate,char line,int seat,boolean reserve) {
+        this.gate = gate;
+        this.line = line;
+        this.seat = seat;
+        this.reserve = reserve;
+    }
+
+    public void reserve() {
+        this.reserve = true;
+    }
+
+    public void cancel() {
+        this.reserve = false;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PerformanceSeat that = (PerformanceSeat) o;
+        return gate == that.gate && line == that.line && seat == that.seat && Objects.equals(id, that.id) && Objects.equals(performance, that.performance);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, performance, gate, line, seat);
+    }
 }

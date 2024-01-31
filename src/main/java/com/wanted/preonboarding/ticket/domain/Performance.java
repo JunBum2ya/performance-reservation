@@ -3,13 +3,16 @@ package com.wanted.preonboarding.ticket.domain;
 import com.wanted.preonboarding.core.converter.EnableConverter;
 import com.wanted.preonboarding.ticket.domain.constant.PerformanceType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Comment;
 
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
+@Getter
 @Entity
 @Table(name = "performance",
         uniqueConstraints = { @UniqueConstraint(name = "performance_unique_key", columnNames = {"id","round"}) })
@@ -34,6 +37,45 @@ public class Performance {
     @Comment("공연 일시")
     @Column(nullable = false)
     private LocalDateTime startDate;
-    @OneToMany(mappedBy = "performance")
-    private Set<PerformanceSeat> seats = new LinkedHashSet<>();
+    @OneToMany(mappedBy = "performance",cascade = CascadeType.ALL)
+    private final Set<PerformanceSeat> seats;
+
+    public Performance() {
+        this.seats = new LinkedHashSet<>();
+    }
+
+    @Builder
+    public Performance(String name, int price, int round, PerformanceType type, LocalDateTime startDate, Collection<PerformanceSeat> seats) {
+        this.name = name;
+        this.price = price;
+        this.round = round;
+        this.type = type;
+        this.startDate = startDate;
+        this.seats = new LinkedHashSet<>();
+        seats.forEach(seat -> {
+            seat.setPerformance(this);
+            this.seats.add(seat);
+        });
+    }
+
+    public void update(String name, int price, int round, PerformanceType type, LocalDateTime startDate) {
+        this.name = name;
+        this.price = price;
+        this.round = round;
+        this.type = type;
+        this.startDate = startDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Performance that = (Performance) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }
