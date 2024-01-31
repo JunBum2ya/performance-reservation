@@ -8,7 +8,7 @@ import org.hibernate.annotations.Comment;
 @Entity
 @Table(name = "performance_seat_info"
         ,uniqueConstraints = @UniqueConstraint(name = "performance_seat_info_unique",columnNames = {
-                "performance_id","round","gate","line","seat"
+                "performance_id","gate","line","seat"
 }))
 public class PerformanceSeat extends AuditingDateTimeEntity {
     @Id
@@ -19,9 +19,6 @@ public class PerformanceSeat extends AuditingDateTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "performance_id",nullable = false)
     private Performance performance;
-    @Comment("회차(FK)")
-    @Column(nullable = false)
-    private int round;
     @Comment("입장 게이트")
     @Column(nullable = false)
     private int gate;
@@ -34,5 +31,7 @@ public class PerformanceSeat extends AuditingDateTimeEntity {
     @Convert(converter = EnableConverter.class)
     @Column(nullable = false)
     private boolean reserve = true;
+    @OneToOne(mappedBy = "performanceSeat")
+    private Reservation reservation;
 
 }

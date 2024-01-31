@@ -2,6 +2,7 @@ package com.wanted.preonboarding.ticket.domain;
 
 import com.wanted.preonboarding.core.domain.AuditingDateTimeEntity;
 import jakarta.persistence.*;
+import org.hibernate.annotations.Comment;
 
 @Entity
 @Table(name = "reservation")
@@ -13,12 +14,10 @@ public class Reservation extends AuditingDateTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "performance_id",nullable = false)
     private PerformanceSeat performanceSeat;
+    @Comment("예약자명")
     @Column(nullable = false)
     private String name;
+    @Comment("예약자 휴대전화 번호")
+    @Column(nullable = false)
     private String phoneNumber;
-    private int round;
-    private int gate;
-    private char line;
-    private int seat;
-
 }

@@ -34,9 +34,6 @@ public class Performance {
     @Comment("공연 일시")
     @Column(nullable = false)
     private LocalDateTime startDate;
-    @Convert(converter = EnableConverter.class)
-    @Column(name = "is_reserve", nullable = false)
-    private boolean reserve = false;
     @OneToMany(mappedBy = "performance")
     private Set<PerformanceSeat> seats = new LinkedHashSet<>();
 }
