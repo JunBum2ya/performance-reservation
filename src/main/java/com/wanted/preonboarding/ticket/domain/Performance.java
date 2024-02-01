@@ -52,10 +52,12 @@ public class Performance {
         this.type = type;
         this.startDate = startDate;
         this.seats = new LinkedHashSet<>();
-        seats.forEach(seat -> {
-            seat.setPerformance(this);
-            this.seats.add(seat);
-        });
+        if(seats != null) {
+            seats.forEach(seat -> {
+                seat.setPerformance(this);
+                this.seats.add(seat);
+            });
+        }
     }
 
     public void update(String name, int price, int round, PerformanceType type, LocalDateTime startDate) {
