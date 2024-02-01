@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
@@ -54,6 +56,21 @@ public class ReservationRepositoryTest {
         //then
         assertThat(savedReservation).isNotNull();
         assertThat(savedReservation.getId()).isNotNull();
+    }
+
+    @DisplayName("고객이름과 연락처로 예약을 조회하면 reservation page가 반환된다.")
+    @Test
+    public void givenNameAndPhoneNumberAndPageable_whenSearchReservation_thenReturnsReservationPage() {
+        //given
+        String name = "testUser";
+        String phoneNumber = "010-1234-5678";
+        Pageable pageable = Pageable.ofSize(10);
+        //when
+        Page<Reservation> reservationPage = reservationRepository.findAllByNameAndPhoneNumberOrderByCreatedAt(name,phoneNumber,pageable);
+        //then
+        assertThat(reservationPage).isNotEmpty();
+        assertThat(reservationPage.getTotalPages()).isEqualTo(1);
+        assertThat(reservationPage.getSize()).isEqualTo(10);
     }
 
     @DisplayName("전체 검색을 하면 전체 리스트가 반환된다.")

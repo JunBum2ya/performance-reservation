@@ -12,6 +12,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -42,6 +44,22 @@ public class ReservationServiceTest {
         //then
         then(reservationRepository).should().save(any(Reservation.class));
         assertThat(testReservation.getName()).isEqualTo("testUser");
+    }
+
+    @DisplayName("고객 이름과 연락처 Pageable로 검색을 하면 ReservationInfo 페이지가 반환된다.")
+    @Test
+    public void givenNameAndPhoneNumberAndPageable_whenSearchReservation_thenReturnsReservationInfoPage() {
+        //given
+        String name = "testUser";
+        String phoneNumber = "010-1234-5678";
+        Pageable pageable = Pageable.ofSize(10);
+        given(reservationRepository.findAllByNameAndPhoneNumberOrderByCreatedAt(any(String.class),any(String.class),any(Pageable.class)))
+                .willReturn(Page.empty());
+        //when
+        Page<ReservationInfo> reservationInfoPage = reservationService.searchReservation(name,phoneNumber,pageable);
+        //then
+        then(reservationRepository).should().findAllByNameAndPhoneNumberOrderByCreatedAt(any(String.class),any(String.class),any(Pageable.class));
+        assertThat(reservationInfoPage).isEmpty();
     }
 
     private Reservation createReservation(int gate, char line, int seat) {
