@@ -108,9 +108,9 @@ public class PerformanceRepositoryTest {
                 .type(PerformanceType.CONCERT)
                 .round(3)
                 .startDate(LocalDateTime.now())
-                .seats(List.of(createPerformanceSeat(1,'A','1')
-                        ,createPerformanceSeat(1,'A','2')
-                        ,createPerformanceSeat(1,'B','1'))
+                .seats(List.of(createPerformanceSeat(1,'A',1)
+                        ,createPerformanceSeat(1,'A',2)
+                        ,createPerformanceSeat(1,'B',1))
                 )
                 .build();
     }

@@ -5,6 +5,7 @@ import com.wanted.preonboarding.ticket.domain.PerformanceSeat;
 import com.wanted.preonboarding.ticket.domain.Reservation;
 import com.wanted.preonboarding.ticket.domain.constant.PerformanceType;
 import com.wanted.preonboarding.ticket.dto.ReservationInfo;
+import com.wanted.preonboarding.ticket.repository.PerformanceSeatRepository;
 import com.wanted.preonboarding.ticket.repository.ReservationRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +19,8 @@ import org.springframework.data.domain.Pageable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -31,6 +34,8 @@ public class ReservationServiceTest {
     private ReservationService reservationService;
     @Mock
     private ReservationRepository reservationRepository;
+    @Mock
+    private PerformanceSeatRepository performanceSeatRepository;
 
     @DisplayName("reservationInfo의 데이터로 예약을 했을 경우 ReservationInfo가 반환됩니다.")
     @Test
@@ -38,10 +43,13 @@ public class ReservationServiceTest {
         //given
         Reservation reservation = createReservation(1,'A',3);
         ReservationInfo reservationInfo = ReservationInfo.of(reservation);
+        given(performanceSeatRepository.findPerformanceSeatByGateAndLineAndSeatAndPerformance_Id(any(Integer.class),any(Character.class),any(Integer.class),any(UUID.class)))
+                .willReturn(Optional.of(reservationInfo.getPerformanceSeatInfo().toEntity()));
         given(reservationRepository.save(any(Reservation.class))).willReturn(reservation);
         //when
         ReservationInfo testReservation = reservationService.reserve(reservationInfo);
         //then
+        then(performanceSeatRepository).should().findPerformanceSeatByGateAndLineAndSeatAndPerformance_Id(any(Integer.class),any(Character.class),any(Integer.class),any(UUID.class));
         then(reservationRepository).should().save(any(Reservation.class));
         assertThat(testReservation.getName()).isEqualTo("testUser");
     }
@@ -72,6 +80,7 @@ public class ReservationServiceTest {
 
     private Performance createPerformance() {
         return Performance.builder()
+                .id(UUID.randomUUID())
                 .name("위시")
                 .price(30000)
                 .type(PerformanceType.CONCERT)

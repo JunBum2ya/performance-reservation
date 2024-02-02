@@ -1,5 +1,6 @@
 package com.wanted.preonboarding.ticket.dto;
 
+import com.wanted.preonboarding.ticket.domain.PerformanceSeat;
 import com.wanted.preonboarding.ticket.domain.Reservation;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -25,12 +26,16 @@ public class ReservationInfo {
                 .build();
     }
 
-    public Reservation toEntity() {
+    public Reservation toEntity(PerformanceSeat performanceSeat) {
         return Reservation.builder()
-                .performanceSeat(performanceSeatInfo.toEntity())
+                .performanceSeat(performanceSeat)
                 .name(name)
                 .phoneNumber(phoneNumber)
                 .build();
+    }
+
+    public Reservation toEntity() {
+        return toEntity(performanceSeatInfo.toEntity());
     }
 
 }

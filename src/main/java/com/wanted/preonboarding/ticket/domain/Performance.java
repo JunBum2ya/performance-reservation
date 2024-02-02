@@ -48,7 +48,8 @@ public class Performance {
     }
 
     @Builder
-    public Performance(String name, int price, int round, PerformanceType type, LocalDateTime startDate, Collection<PerformanceSeat> seats) {
+    public Performance(UUID id,String name, int price, int round, PerformanceType type, LocalDateTime startDate, Collection<PerformanceSeat> seats) {
+        this.id = id;
         this.name = name;
         this.price = price;
         this.round = round;
