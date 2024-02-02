@@ -37,6 +37,9 @@ public class Performance {
     @Comment("공연 일시")
     @Column(nullable = false)
     private LocalDateTime startDate;
+    @Convert(converter = EnableConverter.class)
+    @Column(nullable = false)
+    private boolean reserve;
     @OneToMany(mappedBy = "performance",cascade = CascadeType.ALL)
     private final Set<PerformanceSeat> seats;
 
